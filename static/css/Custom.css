@@ -1,0 +1,156 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 26/jun/2014, 15:26:08
+    Author     : daniel
+*/
+.flash{
+
+  -moz-animation: flash 1s ease-out;
+  -moz-animation-iteration-count: 15;
+
+  -webkit-animation: flash 1s ease-out;
+  -webkit-animation-iteration-count: 15;
+
+  -ms-animation: flash 1s ease-out;
+  -ms-animation-iteration-count: 15;
+
+}
+
+@-webkit-keyframes flash {
+    0% { background-color:none;}
+    50% { background-color:#FFFFFF;}        
+    100% {background-color:none;}
+}
+
+@-moz-keyframes flash {
+    0% { background-color:none;}
+    50% { background-color:#FFFFFF;}        
+    100% {background-color:none;}
+}
+
+@-ms-keyframes flash {
+    0% { background-color:none;}
+    50% { background-color:#FFFFFF;}        
+    100% {background-color:none;}
+}
+
+.box-backend
+{
+    width:300px;
+    height:60px;
+    border-radius:60px;
+    border-color: #000;
+    border-width: 1px;
+    border-style: solid;
+    font-size:45px;
+    color:#fff;
+    line-height:60px;
+    text-align:center;    
+    background:#981418;
+    -webkit-box-shadow: 11px 15px 14px -6px rgba(0,0,0,0.78);
+    -moz-box-shadow: 11px 15px 14px -6px rgba(0,0,0,0.78);
+    box-shadow: 11px 15px 14px -6px rgba(0,0,0,0.78);    
+}
+.box-backend-small
+{
+    width:150px;
+    height:60px;
+    border-radius:60px;
+    border-color: #000;
+    border-width: 1px;
+    border-style: solid;
+    font-size:45px;
+    color:#fff;
+    line-height:60px;
+    text-align:center;    
+    background:#981418; 
+    -webkit-box-shadow: 11px 15px 14px -6px rgba(0,0,0,0.78);
+    -moz-box-shadow: 11px 15px 14px -6px rgba(0,0,0,0.78);
+    box-shadow: 11px 15px 14px -6px rgba(0,0,0,0.78);
+}
+
+.box
+{
+    width:700px;
+    height:140px;
+    border-radius:140px;
+    border-color: #000;
+    border-width: 1px;
+    border-style: solid;
+    font-size:100px;
+    color:#fff;
+    line-height:140px;
+    text-align:center;    
+    background:#000;
+    -webkit-box-shadow: 11px 15px 14px -6px rgba(0,0,0,0.78);
+    -moz-box-shadow: 11px 15px 14px -6px rgba(0,0,0,0.78);
+    box-shadow: 11px 15px 14px -6px rgba(0,0,0,0.78);
+}
+
+.box-green{
+    background:#16838E; 
+}
+
+.box-red{
+    background:#D16B26;; 
+}
+
+.box-blue{
+    background:#8A9045; 
+}
+
+.box-black{
+    background:#981418;
+}
+
+.box-small
+    {
+    width:340px;
+    height:140px;
+    border-radius:140px;
+    border-color: #000;
+    border-width: 1px;
+    border-style: solid;    
+    font-size:100px;
+    color:#fff;
+    line-height:140px;
+    text-align:center;
+    background:#981418;
+    -webkit-box-shadow: 11px 15px 14px -6px rgba(0,0,0,0.78);
+    -moz-box-shadow: 11px 15px 14px -6px rgba(0,0,0,0.78);
+    box-shadow: 11px 15px 14px -6px rgba(0,0,0,0.78);    
+    }
+ .box-small-green{
+    background:#16838E; 
+}
+
+.box-small-red{
+    background:#D16B26; 
+}
+
+.box-small-blue{
+    background:#8A9045; 
+}
+
+.box-small-black{
+    background:#981418;
+}
+
+.button-width200{
+    width:200px;
+}
+
+.top5 { margin-top:5px; }
+.top7 { margin-top:7px; }
+.top10 { margin-top:10px; }
+.top15 { margin-top:15px; }
+.top17 { margin-top:17px; }
+.top30 { margin-top:30px; }  
+.top70 { margin-top:70px; }
+.top100 { margin-top:100px; }
+.top150 { margin-top:150px; }
+

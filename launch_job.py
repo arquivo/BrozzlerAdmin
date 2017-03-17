@@ -1,18 +1,16 @@
-from datetime import date, time, datetime, timedelta
+from datetime import datetime, timedelta
 
 import brozzler
 import rethinkstuff
 import yaml
-from apscheduler.schedulers.background import BackgroundScheduler
 
 import database
 
 
-def launch_scheduled_job(collection_name, job_id, job_conf, date, hour, minutes):
-    sched = BackgroundScheduler()
+def launch_scheduled_job(scheduler, collection_name, job_id, job_conf, date, hour, minutes):
     scheduled_time = datetime.strptime(date, '%m/%d/%Y') + timedelta(hours=int(hour), minutes=int(minutes))
-    sched.add_job(launch_job, 'date', run_date=scheduled_time, args=[collection_name, job_id, job_conf])
-    sched.start()
+    scheduler.add_job(launch_job, 'date', id=job_id, run_date=scheduled_time, args=[collection_name, job_id, job_conf])
+
 
 # save part at database
 # id of the noob needs to be generated

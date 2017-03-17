@@ -1,5 +1,7 @@
 import rethinkdb as r
 import yaml
+from apscheduler.jobstores.rethinkdb import RethinkDBJobStore
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, g, render_template, abort, request, flash, redirect
 
 import database
@@ -28,10 +30,14 @@ def db_setup(connection):
 @app.before_request
 def before_request():
     try:
+        sched = BackgroundScheduler()
+        sched.add_jobstore(RethinkDBJobStore())
+        sched.start()
+
+        g.scheduler = sched
         g.database_conn = r.connect("localhost", 28015)
     except r.RqlDriverError:
         abort(503, "No database connection could be established.")
-
 
 @app.teardown_request
 def teardown_request(exception):
@@ -48,7 +54,7 @@ def new_schedule_job():
     form = NewScheduleJobForm()
     if request.args.get('collection'):
         if form.validate_on_submit():
-            launch_scheduled_job(request.args.get('collection'), form.job_name.data, form.job_config.data,
+            launch_scheduled_job(g.scheduler, request.args.get('collection'), form.job_name.data, form.job_config.data,
                                  form.job_schedule.data, form.job_hour.data, form.job_minutes.data)
             return redirect('/')
         else:

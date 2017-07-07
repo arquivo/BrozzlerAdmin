@@ -41,7 +41,7 @@
                 <div class="col-lg-8">
                     <h4>Job List:
                     {% for job in collection['job_list'] %}
-                        <a href="http://localhost:8000/jobs/{{ job }}"> {{ job }}</a>
+                        <a href="http://{{ config.HOSTNAME }}/jobs/{{ job }}"> {{ job }}</a>
                     {% endfor %}
                     </h4>
                     <a href="/newjob?collection={{ collection['name'] }}" class="btn btn-primary">

@@ -47,7 +47,7 @@ def teardown_request(exception):
         pass
 
 
-@app.route('/newschedulejob', methods=['GET', 'POST'])
+@app.route('/admin/newschedulejob', methods=['GET', 'POST'])
 def new_schedule_job():
     job_name = ''
     conf = ''
@@ -73,7 +73,7 @@ def new_schedule_job():
     return render_template('new_scheduled_job_form.html', form=form)
 
 
-@app.route('/newjob', methods=['GET', 'POST'])
+@app.route('/admin/newjob', methods=['GET', 'POST'])
 def new_job():
     job_name = ''
     conf = ''
@@ -98,7 +98,7 @@ def new_job():
     return render_template('new_job_form.html', form=form)
 
 
-@app.route('/newcollection', methods=['GET', 'POST'])
+@app.route('/admin/newcollection', methods=['GET', 'POST'])
 def new_collection():
     form = NewCollectionForm()
     if form.validate_on_submit():
@@ -109,7 +109,7 @@ def new_collection():
     return render_template('new_collection_form.html', form=form)
 
 
-@app.route('/')
+@app.route('/admin')
 def list_collections():
     collections = list(r.db(DATABASE).table(TABLE_COLLECTIONS).run(g.database_conn))
     names = []

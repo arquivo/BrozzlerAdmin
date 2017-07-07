@@ -56,7 +56,7 @@ def new_schedule_job():
         if form.validate_on_submit():
             launch_scheduled_job(g.scheduler, request.args.get('collection'), form.job_name.data, form.job_config.data,
                                  form.job_schedule.data, form.job_hour.data, form.job_minutes.data)
-            return redirect('/')
+            return redirect('/admin')
         else:
             # get job_name
             job_name = database.generate_job_name(request.args.get('collection'))
@@ -81,7 +81,7 @@ def new_job():
     if request.args.get('collection'):
         if form.validate_on_submit():
             launch_job(request.args.get('collection'), form.job_name.data, form.job_config.data)
-            return redirect('/')
+            return redirect('/admin')
         else:
             # get job_name
             job_name = database.generate_job_name(request.args.get('collection'))
@@ -103,7 +103,7 @@ def new_collection():
     form = NewCollectionForm()
     if form.validate_on_submit():
         database.new_collection(form.collection_name.data, form.collection_prefix.data)
-        return redirect('/')
+        return redirect('/admin')
     else:
         flash('Invalid collection parameters')
     return render_template('new_collection_form.html', form=form)

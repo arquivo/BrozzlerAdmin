@@ -47,7 +47,7 @@ def teardown_request(exception):
         pass
 
 
-@app.route('/admin/newschedulejob', methods=['GET', 'POST'])
+@app.route('/newschedulejob', methods=['GET', 'POST'])
 def new_schedule_job():
     job_name = ''
     conf = ''
@@ -56,7 +56,7 @@ def new_schedule_job():
         if form.validate_on_submit():
             launch_scheduled_job(g.scheduler, request.args.get('collection'), form.job_name.data, form.job_config.data,
                                  form.job_schedule.data, form.job_hour.data, form.job_minutes.data)
-            return redirect('/admin')
+            return redirect('/')
         else:
             # get job_name
             job_name = database.generate_job_name(request.args.get('collection'))
@@ -73,7 +73,7 @@ def new_schedule_job():
     return render_template('new_scheduled_job_form.html', form=form)
 
 
-@app.route('/admin/newjob', methods=['GET', 'POST'])
+@app.route('/newjob', methods=['GET', 'POST'])
 def new_job():
     job_name = ''
     conf = ''
@@ -81,7 +81,7 @@ def new_job():
     if request.args.get('collection'):
         if form.validate_on_submit():
             launch_job(request.args.get('collection'), form.job_name.data, form.job_config.data)
-            return redirect('/admin')
+            return redirect('/')
         else:
             # get job_name
             job_name = database.generate_job_name(request.args.get('collection'))
@@ -98,18 +98,18 @@ def new_job():
     return render_template('new_job_form.html', form=form)
 
 
-@app.route('/admin/newcollection', methods=['GET', 'POST'])
+@app.route('/newcollection', methods=['GET', 'POST'])
 def new_collection():
     form = NewCollectionForm()
     if form.validate_on_submit():
         database.new_collection(form.collection_name.data, form.collection_prefix.data)
-        return redirect('/admin')
+        return redirect('/')
     else:
         flash('Invalid collection parameters')
     return render_template('new_collection_form.html', form=form)
 
 
-@app.route('/admin')
+@app.route('/')
 def list_collections():
     collections = list(r.db(DATABASE).table(TABLE_COLLECTIONS).run(g.database_conn))
     names = []

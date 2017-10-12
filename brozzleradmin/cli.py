@@ -49,6 +49,7 @@ def resume_job(argv=None):
     frontier = brozzler.RethinkDbFrontier(rr)
     job = db.get_job_by_name(args.job_id)
     if job:
+        job.stop_requested = None
         frontier.resume_job(job)
 
 
@@ -72,8 +73,3 @@ def get_all_outlinks(argv=None):
         print("Blocked:")
         for url in document['outlinks']['blocked']:
             print(url)
-
-
-if __name__ == '__main__':
-    get_all_outlinks()
-    # resume_job()

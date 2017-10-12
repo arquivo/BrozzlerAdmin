@@ -1,0 +1,8 @@
+*.pyc
+*.diff
+.*.sw*
+/BrozzlerController.egg-info/
+/build/
+/dist/
+/brozzleradmin/heaven.log
+/brozzleradmin/services.py

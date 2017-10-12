@@ -1,7 +1,6 @@
 import os
 
 import rethinkstuff
-
 from selenium import webdriver
 
 # TODO this do not work, if warcprox meta is not sent for every request with the right warcprox_meta the captures will

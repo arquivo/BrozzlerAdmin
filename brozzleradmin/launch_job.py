@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta
 
 import brozzler
-import rethinkstuff
+import doublethink
 import yaml
+from brozzler import model
 
-import database
+import brozzleradmin.database as db
 
 
 def launch_scheduled_job(scheduler, collection_name, job_id, job_conf, date, hour, minutes):
@@ -18,21 +19,27 @@ def launch_job(collection_name, job_id, job_conf):
     conf = yaml.load(job_conf)
     # the pre configured jobid is ignored
     conf['id'] = job_id
-    r = rethinkstuff.Rethinker(servers=['localhost:28015'], db='brozzler')
-    frontier = brozzler.RethinkDbFrontier(r)
+    rr = doublethink.Rethinker(servers=['localhost:28015'], db='brozzler')
+    frontier = brozzler.RethinkDbFrontier(rr)
 
     try:
         brozzler.new_job(frontier, conf)
-        database.update_collection_joblist(collection_name, job_id)
-    except brozzler.job.InvalidJobConf as e:
+        db.update_collection_joblist(collection_name, job_id)
+    except model.InvalidJobConf as e:
         # TODO log this
         print('Invalid job')
 
 
+def resume_job(job_id):
+    rr = doublethink.Rethinker(servers=['localhost:28015'], db='brozzler')
+    frontier = brozzler.RethinkDbFrontier(rr)
+    job = db.get_job_by_name(job_id)
+    frontier.resume_job(job)
+
 if __name__ == '__main__':
     # test launch job
-    r = rethinkstuff.Rethinker(servers=['localhost:28015'], db='brozzler_controller')
-    collection = list(r.table('collections').filter({'name': 'VideoTesting'}).run())[0]
+    rr = doublethink.Rethinker(servers=['localhost:28015'], db='brozzler_controller')
+    collection = list(rr.table('collections').filter({'name': 'VideoTesting'}).run())[0]
     job_prefix = collection['job_prefix']
 
     # generate job_id

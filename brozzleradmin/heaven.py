@@ -1,28 +1,28 @@
+import logging
+
 import rethinkdb as r
 import yaml
 from apscheduler.jobstores.rethinkdb import RethinkDBJobStore
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, g, render_template, abort, request, flash, redirect
-
-import database
+from flask import Flask, g, render_template, abort, request, flash, redirect, current_app
 from forms import NewCollectionForm
 from forms import NewJobForm
 from forms import NewScheduleJobForm
 from launch_job import launch_job, launch_scheduled_job
 
+import brozzleradmin.database as db
+
 app = Flask(__name__)
 app.config.from_object('config')
 
-DATABASE = 'brozzler_controller'
-TABLE_COLLECTIONS = 'collections'
 
-
-def db_setup(connection):
+def db_setup():
+    connection = r.connect(app.config['RETHINKDB_SERVER'], app.config['RETHINKDB_PORT'])
     try:
-        r.db_create(DATABASE).run(connection)
-        r.db(DATABASE).table_create(TABLE_COLLECTIONS).run(connection)
+        r.db_create(app.config['DATABASE']).run(connection)
+        r.db(app.config['DATABASE']).table_create(app.config['TABLE_COLLECTIONS']).run(connection)
     except r.RqlRuntimeError:
-        print("Database already exist")
+        logging.info("Database already exist")
     finally:
         connection.close()
 
@@ -30,6 +30,7 @@ def db_setup(connection):
 @app.before_request
 def before_request():
     try:
+        # TODO this is needed?
         sched = BackgroundScheduler()
         sched.add_jobstore(RethinkDBJobStore())
         sched.start()
@@ -37,14 +38,16 @@ def before_request():
         g.scheduler = sched
         g.database_conn = r.connect("localhost", 28015)
     except r.RqlDriverError:
+        logging.critical("No database connection could be established.")
         abort(503, "No database connection could be established.")
+
 
 @app.teardown_request
 def teardown_request(exception):
     try:
         g.database_conn.close()
     except AttributeError:
-        pass
+        logging.warning("Some problems occurred closing the database connection")
 
 
 @app.route('/newschedulejob', methods=['GET', 'POST'])
@@ -59,9 +62,9 @@ def new_schedule_job():
             return redirect('/')
         else:
             # get job_name
-            job_name = database.generate_job_name(request.args.get('collection'))
+            job_name = db.generate_job_name(request.args.get('collection'))
 
-            conf = database.get_last_job_configuration(request.args.get('collection'))
+            conf = db.get_last_job_configuration(request.args.get('collection'))
             if conf:
                 conf['id'] = job_name
             else:
@@ -84,9 +87,9 @@ def new_job():
             return redirect('/')
         else:
             # get job_name
-            job_name = database.generate_job_name(request.args.get('collection'))
+            job_name = db.generate_job_name(request.args.get('collection'))
 
-            conf = database.get_last_job_configuration(request.args.get('collection'))
+            conf = db.get_last_job_configuration(request.args.get('collection'))
             if conf:
                 conf['id'] = job_name
             else:
@@ -102,16 +105,18 @@ def new_job():
 def new_collection():
     form = NewCollectionForm()
     if form.validate_on_submit():
-        database.new_collection(form.collection_name.data, form.collection_prefix.data)
+        db.new_collection(form.collection_name.data, form.collection_prefix.data)
         return redirect('/')
     else:
         flash('Invalid collection parameters')
+        logging.info('Invalid collection parameters')
     return render_template('new_collection_form.html', form=form)
 
 
 @app.route('/')
 def list_collections():
-    collections = list(r.db(DATABASE).table(TABLE_COLLECTIONS).run(g.database_conn))
+    collections = list(
+        r.db(current_app.config['DATABASE']).table(current_app.config['TABLE_COLLECTIONS']).run(g.database_conn))
     names = []
     for collection in collections:
         names.append(collection['name'])
@@ -120,4 +125,6 @@ def list_collections():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(filename='heaven.log', level=logging.INFO)
+    db_setup()
     app.run(debug=True)

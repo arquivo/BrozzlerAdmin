@@ -127,4 +127,4 @@ def list_collections():
 if __name__ == '__main__':
     logging.basicConfig(filename='heaven.log', level=logging.INFO)
     db_setup()
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

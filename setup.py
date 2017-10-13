@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='BrozzlerController',
-    version='0.1dev',
+    version='0.1dev3',
     packages=['brozzleradmin'],
     license='Apache License 2.0',
     long_description=open('README.md').read(),

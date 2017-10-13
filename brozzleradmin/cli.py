@@ -3,9 +3,9 @@ import logging
 import os
 import sys
 
-import brozzler
 import doublethink
 
+import brozzler
 import brozzleradmin.database as db
 
 
@@ -49,7 +49,6 @@ def resume_job(argv=None):
     frontier = brozzler.RethinkDbFrontier(rr)
     job = db.get_job_by_name(args.job_id)
     if job:
-        job.stop_requested = None
         frontier.resume_job(job)
 
 
@@ -57,6 +56,10 @@ def get_all_outlinks(argv=None):
     argv = argv or sys.argv
     arg_parser = argparse.ArgumentParser(description='Print all outlinks from a Brozzler Job')
     arg_parser.add_argument('-j', '--job-id', dest='job_id', default=None)
+    arg_parser.add_argument('-r', '--rejected', dest='rejected', action='store_true')
+    arg_parser.add_argument('-b', '--blocked', dest='blocked', action='store_true')
+    arg_parser.add_argument('-a', '--accepted', dest='accepted', action='store_true')
+
     add_common_options(arg_parser, argv)
     add_rethinkdb_options(arg_parser)
 
@@ -64,12 +67,21 @@ def get_all_outlinks(argv=None):
     rr = doublethink.Rethinker(servers=args.rethinkdb_servers, db=args.rethinkdb_db)
     cursor = list(rr.table('pages').filter({'job_id': args.job_id, 'brozzle_count': 1}).run())
     for document in cursor:
-        print("Rejected:")
-        for url in document['outlinks']['rejected']:
-            print(url)
-        print("Accepted:")
-        for url in document['outlinks']['accepted']:
-            print(url)
-        print("Blocked:")
-        for url in document['outlinks']['blocked']:
-            print(url)
+        if args.rejected:
+            print("Rejected:")
+            for url in document['outlinks']['rejected']:
+                print(url)
+
+        if args.accepted:
+            print("Accepted:")
+            for url in document['outlinks']['accepted']:
+                print(url)
+
+        if args.blocked:
+            print("Blocked:")
+            for url in document['outlinks']['blocked']:
+                print(url)
+
+
+if __name__ == '__main__':
+    resume_job()

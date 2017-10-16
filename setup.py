@@ -11,7 +11,8 @@ setuptools.setup(
     entry_points={
         'console_scripts': [
             'bc-get-outlinks=brozzleradmin.cli:get_all_outlinks',
-            'bc-resume-job=brozzleradmin.cli:resume_job'
+            'bc-resume-job=brozzleradmin.cli:resume_job',
+            'bc-get-job-queue=brozzleradmin.cli:get_job_queue'
         ]
     }
 )

@@ -52,6 +52,19 @@ def resume_job(argv=None):
         frontier.resume_job(job)
 
 
+def get_job_queue(argv=None):
+    argv = argv or sys.argv
+    arg_parser = argparse.ArgumentParser(description='Print all pages queued to crawl in a job')
+    arg_parser.add_argument('-j', '--job-id', dest='job_id', default=None)
+    add_common_options(arg_parser, argv)
+    add_rethinkdb_options(arg_parser)
+
+    args = arg_parser.parse_args(args=argv[1::])
+    rr = doublethink.Rethinker(servers=args.rethinkdb_servers, db=args.rethinkdb_db)
+    cursor = list(rr.table('pages').filter({'job_id': args.job_id, 'brozzle_count': 0}).run())
+    for document in cursor:
+        print(document['url'])
+
 def get_all_outlinks(argv=None):
     argv = argv or sys.argv
     arg_parser = argparse.ArgumentParser(description='Print all outlinks from a Brozzler Job')

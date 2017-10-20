@@ -1,5 +1,8 @@
+import uuid
+
 import doublethink
 import rethinkdb as r
+
 from brozzler import Job
 
 DATABASE = 'brozzler_controller'
@@ -60,11 +63,8 @@ def generate_job_name(collection_name):
         'job_list']
     if not job_list:
         job_name = '{}'.format(job_prefix)
-    elif len(job_list) == 1:
-        job_name = '{}_{}'.format(job_prefix, '1')
     else:
-        job_number = int(job_list[-1].split('_')[1]) + 1
-        job_name = '{}_{}'.format(job_prefix, job_number)
+        job_name = '{}_{}'.format(job_prefix, str.upper(uuid.uuid1().urn[9:17]))
     return job_name
 
 

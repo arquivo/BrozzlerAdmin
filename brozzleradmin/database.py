@@ -3,6 +3,7 @@ import uuid
 import doublethink
 import rethinkdb as r
 
+import brozzler
 from brozzler import Job
 
 DATABASE = 'brozzler_controller'
@@ -24,6 +25,11 @@ def get_services():
     services = list(rr.table('services').run())
     return services
 
+
+# TODO get database values from config file instead hardcoded
+def get_frontier():
+    rr = doublethink.Rethinker(servers=['localhost:28015'], db='brozzler')
+    return brozzler.RethinkDbFrontier(rr)
 
 def update_collection_joblist(collection_name, job_id):
     rr = doublethink.Rethinker(servers=['localhost:28015'], db='brozzler_controller')

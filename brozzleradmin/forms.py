@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
+from wtforms import StringField, BooleanField
 from wtforms.validators import DataRequired
 from wtforms.widgets import TextArea
 
@@ -20,3 +20,4 @@ class NewScheduleJobForm(FlaskForm):
     job_schedule = StringField('job_schedule', validators=[DataRequired()])
     job_hour = StringField('job_hour', validators=[DataRequired()])
     job_minutes = StringField('job_minute', validators=[DataRequired()])
+    job_recurring = BooleanField('job_recurring')

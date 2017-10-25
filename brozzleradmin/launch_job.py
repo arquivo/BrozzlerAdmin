@@ -1,11 +1,19 @@
+import logging
 from datetime import datetime, timedelta
 
-import brozzler
 import doublethink
 import yaml
-from brozzler import model
 
 import brozzleradmin.database as db
+from brozzler import model, new_job
+
+
+# TODO Add logging starting and scheduling jobs
+
+def launch_scheduled_daily_job(scheduler, collection_name, job_id, job_conf, date, hour, minutes):
+    scheduled_time = datetime.strptime(date, '%m/%d/%Y') + timedelta(hours=int(hour), minutes=int(minutes))
+    scheduler.add_job(launch_job, trigger='cron', id=job_id, start_date=scheduled_time, hour=hour, minute=minutes,
+                      args=[collection_name, job_id, job_conf])
 
 
 def launch_scheduled_job(scheduler, collection_name, job_id, job_conf, date, hour, minutes):
@@ -19,23 +27,22 @@ def launch_job(collection_name, job_id, job_conf):
     conf = yaml.load(job_conf)
     # the pre configured jobid is ignored
     conf['id'] = job_id
-    rr = doublethink.Rethinker(servers=['localhost:28015'], db='brozzler')
-    frontier = brozzler.RethinkDbFrontier(rr)
+    frontier = db.get_frontier()
 
     try:
-        brozzler.new_job(frontier, conf)
+        new_job(frontier, conf)
         db.update_collection_joblist(collection_name, job_id)
     except model.InvalidJobConf as e:
-        # TODO log this
-        print('Invalid job')
+        logging.warning('Invalid job configuration: {}'.format(e))
 
 
 def resume_job(job_id):
-    rr = doublethink.Rethinker(servers=['localhost:28015'], db='brozzler')
-    frontier = brozzler.RethinkDbFrontier(rr)
+    frontier = db.get_frontier()
     job = db.get_job_by_name(job_id)
     frontier.resume_job(job)
 
+
+# TODO remove this, and make it a pytest
 if __name__ == '__main__':
     # test launch job
     rr = doublethink.Rethinker(servers=['localhost:28015'], db='brozzler_controller')

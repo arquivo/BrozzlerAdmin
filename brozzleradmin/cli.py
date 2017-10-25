@@ -12,7 +12,7 @@ import brozzleradmin.database as db
 # TODO decouple this logic with the data access code
 
 def add_common_options(arg_parser, argv=None):
-    argv = argv or sys.argv
+    argv = argv or syspf
     arg_parser.add_argument(
         '-q', '--quiet', dest='log_level', action='store_const',
         default=logging.INFO, const=logging.WARN, help=(

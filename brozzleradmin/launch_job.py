@@ -32,6 +32,7 @@ def launch_job(collection_name, job_id, job_conf):
     try:
         new_job(frontier, conf)
         db.update_collection_joblist(collection_name, job_id)
+        logging.info('Launched a new job {} from collection {}'.format(job_id, collection_name))
     except model.InvalidJobConf as e:
         logging.warning('Invalid job configuration: {}'.format(e))
 

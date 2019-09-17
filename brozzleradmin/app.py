@@ -1,10 +1,12 @@
 import logging
-
+import sys
 import rethinkdb as r
 import yaml
 from apscheduler.jobstores.rethinkdb import RethinkDBJobStore
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, g, render_template, abort, request, flash, redirect, current_app
+
+sys.path.append(".")
 from forms import NewCollectionForm
 from forms import NewJobForm
 from forms import NewScheduleJobForm
@@ -15,13 +17,15 @@ import brozzleradmin.database as db
 app = Flask(__name__)
 app.config.from_object('config')
 
+rdb = r.RethinkDB()
 
 def db_setup():
-    connection = r.connect(app.config['RETHINKDB_SERVER'], app.config['RETHINKDB_PORT'])
+
+    connection = rdb.connect(app.config['RETHINKDB_SERVER'], app.config['RETHINKDB_PORT'])
     try:
-        r.db_create(app.config['DATABASE']).run(connection)
-        r.db(app.config['DATABASE']).table_create(app.config['TABLE_COLLECTIONS']).run(connection)
-    except r.RqlRuntimeError:
+        rdb.db_create(app.config['DATABASE']).run(connection)
+        rdb.db(app.config['DATABASE']).table_create(app.config['TABLE_COLLECTIONS']).run(connection)
+    except rdb.RqlRuntimeError:
         logging.info("Database already exist")
     finally:
         connection.close()
@@ -36,8 +40,8 @@ def before_request():
         sched.start()
 
         g.scheduler = sched
-        g.database_conn = r.connect("localhost", 28015)
-    except r.RqlDriverError:
+        g.database_conn = rdb.connect("localhost", 28015)
+    except rdb.RqlDriverError:
         logging.critical("No database connection could be established.")
         abort(503, "No database connection could be established.")
 
@@ -58,7 +62,7 @@ def new_schedule_job():
     if request.args.get('collection'):
         if form.validate_on_submit():
             launch_scheduled_job(g.scheduler, request.args.get('collection'), form.job_name.data, form.job_config.data,
-                                 form.job_schedule.data, form.job_hour.data, form.job_minutes.data)
+                                 form.job_schedule.data, form.job_hour.RethinkDB.data, form.job_minutes.data)
             return redirect('/')
         else:
             # get job_name
@@ -116,7 +120,7 @@ def new_collection():
 @app.route('/')
 def list_collections():
     collections = list(
-        r.db(current_app.config['DATABASE']).table(current_app.config['TABLE_COLLECTIONS']).run(g.database_conn))
+        rdb.db(current_app.config['DATABASE']).table(current_app.config['TABLE_COLLECTIONS']).run(g.database_conn))
     names = []
     for collection in collections:
         names.append(collection['name'])

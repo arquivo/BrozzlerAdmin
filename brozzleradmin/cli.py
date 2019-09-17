@@ -3,16 +3,16 @@ import logging
 import os
 import sys
 
+import brozzler
 import doublethink
 
-import brozzler
 import brozzleradmin.database as db
 
 
 # TODO decouple this logic with the data access code
 
 def add_common_options(arg_parser, argv=None):
-    argv = argv or syspf
+    argv = argv or sys.argv
     arg_parser.add_argument(
         '-q', '--quiet', dest='log_level', action='store_const',
         default=logging.INFO, const=logging.WARN, help=(
@@ -66,6 +66,7 @@ def get_job_queue(argv=None):
     cursor = list(rr.table('pages').filter({'job_id': args.job_id, 'brozzle_count': 0}).run())
     for document in cursor:
         print(document['url'])
+
 
 def get_all_outlinks(argv=None):
     argv = argv or sys.argv

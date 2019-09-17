@@ -1,9 +1,8 @@
 import uuid
 
+import brozzler
 import doublethink
 import rethinkdb as r
-
-import brozzler
 from brozzler import Job
 
 DATABASE = 'brozzler_controller'
@@ -30,6 +29,7 @@ def get_services():
 def get_frontier():
     rr = doublethink.Rethinker(servers=['localhost:28015'], db='brozzler')
     return brozzler.RethinkDbFrontier(rr)
+
 
 def update_collection_joblist(collection_name, job_id):
     rr = doublethink.Rethinker(servers=['localhost:28015'], db='brozzler_controller')
@@ -103,8 +103,3 @@ if __name__ == '__main__':
     connection = r.connect("localhost", 28015)
     db_setup(connection)
     get_all_outlinks("Teste")
-    # job = get_job_by_name("MundoNaEscola_2")
-    # print("done")
-    # new_collection('VideoTesting', 'VideoTesting')
-    # update_collection_joblist(connection, 'teste1', 'video_testing')
-    # r.table('comments').index_create('post_id').run(conn)

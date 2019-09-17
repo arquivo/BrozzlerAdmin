@@ -1,0 +1,4 @@
+apscheduler
+brozzler==1.5.7
+WTForms
+rethinkdb

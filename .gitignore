@@ -6,3 +6,5 @@
 /dist/
 /brozzleradmin/heaven.log
 /brozzleradmin/services.py
+/env/*
+.idea/*

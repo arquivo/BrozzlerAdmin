@@ -33,13 +33,9 @@
             <label for="job_warc_prefix">Job Warc Prefix</label>
             {{ form.job_warc_prefix(size=80, class_="form-control") }}
         </div>
-        <div class="form-group form-group-sm">
-            <label for="job_template">Job Template</label>
-            {{ form.job_template_config(size=5, class_="form-control") }}
-        </div>
-        <div class="form-group form-group-sm">
-            <label for="job_seeds">Job Seeds</label>
-            {{ form.job_seeds(size=5, class_="form-control") }}
+        <div class="form-group">
+            <label for="job_configuration">Job Configuration</label>
+            {{ form.job_config(size=80, class_="form-control", rows="13") }}
         </div>
         <button type="submit" class="btn btn-default">Launch Job</button>
     </div>

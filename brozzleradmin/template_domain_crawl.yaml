@@ -1,0 +1,15 @@
+id:  {{ job_id }}
+metadata: {}
+scope:
+  max_hops_off: 1
+seeds:
+  {% for seed in seeds %}- ignore_robots: false
+    url: {{ seed }}
+  {% endfor %}
+user_agent: Arquivo-web-crawler (compatible; brozzler/1.5 +http://arquivo.pt/faq-crawling)
+warcprox_meta:
+  dedup-bucket: {{ crawl_request_name }}
+  stats:
+    buckets:
+    - {{ crawl_request_name }}_stats
+  warc-prefix: {{ crawl_request_prefix }}

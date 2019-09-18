@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField
+from wtforms import StringField, BooleanField, SelectMultipleField
 from wtforms.validators import DataRequired
 from wtforms.widgets import TextArea
 
@@ -10,8 +10,17 @@ class NewCrawlRequestForm(FlaskForm):
 
 
 class NewJobForm(FlaskForm):
+    job_template_choices = [('1', 'Single Page Crawl'), ('2', 'Domain Crawl')]
+    job_template_config = SelectMultipleField('job_template', choices=job_template_choices, validators=[DataRequired()])
+    job_name = StringField('job_name', validators=[DataRequired()])
+    job_warc_prefix = StringField('job_warc_prefix', validators=[DataRequired()])
+    job_seeds = StringField('job_seeds', widget=TextArea(), validators=[DataRequired()])
+
+
+class NewCustomJobForm(FlaskForm):
     job_name = StringField('job_name', validators=[DataRequired()])
     job_config = StringField('job_config', widget=TextArea(), validators=[DataRequired()])
+    job_warc_prefix = StringField('job_warc_prefix', validators=[DataRequired()])
 
 
 class NewScheduleJobForm(FlaskForm):

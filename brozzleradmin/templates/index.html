@@ -37,7 +37,7 @@
     <div class="container">
         {% for crawl_request in crawl_requests %}
             <div class="row">
-                <div class="col-lg-8"><h2 class=""><i class="glyphicon glyphicon-book"></i> Crawl Request {{ crawl_request['name'] }}</h2></div>
+                <div class="col-lg-8"><h2 class=""><i class="glyphicon glyphicon-book"></i> {{ crawl_request['name'] }}</h2></div>
                 <div class="col-lg-8"><h4>Job Prefix: {{ crawl_request['job_prefix'] }}</h4></div>
                 <div class="col-lg-8">
                     <h4>Job List:
@@ -46,9 +46,11 @@
                     {% endfor %}
                     </h4>
                     <a href="/newjob?crawlrequest={{ crawl_request['name'] }}" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-play-circle"></span> Launch new job</a>
+                        <span class="glyphicon glyphicon-play-circle"></span> Launch Job</a>
+                    <a href="/newcustomjob?crawlrequest={{ crawl_request['name'] }}" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-play-circle"></span> Launch Custom Job</a>
                     <a href="/newschedulejob?crawlrequest={{ crawl_request['name'] }}" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-play-circle"></span> Schedule new job</a>
+                        <span class="glyphicon glyphicon-play-circle"></span> Schedule Job</a>
                 </div>
             </div>
         {% endfor %}

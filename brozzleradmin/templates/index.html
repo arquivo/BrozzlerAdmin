@@ -42,7 +42,7 @@
                 <div class="col-lg-8">
                     <h4>Job List:
                     {% for job in crawl_request['job_list'] %}
-                        <a href="http://{{ config.HOSTNAME }}/jobs/{{ job }}"> {{ job }}</a>
+                        <a href="http://{{ config.BROZZLER_ENDPOINT }}/jobs/{{ job }}"> {{ job }}</a>
                     {% endfor %}
                     </h4>
                     <a href="/newjob?crawlrequest={{ crawl_request['name'] }}" class="btn btn-primary">

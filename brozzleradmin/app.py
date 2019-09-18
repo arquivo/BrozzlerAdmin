@@ -1,23 +1,20 @@
 import logging
 import os
-import sys
 
 import doublethink
 import yaml
 from flask import Flask, g, render_template, request, flash, redirect, current_app
 from jinja2 import Template
 
-sys.path.append(".")
-from forms import NewCrawlRequestForm
-from forms import NewJobForm
-from forms import NewScheduleJobForm
-from forms import NewCustomJobForm
-from launch_job import launch_job, launch_scheduled_job
-
 import brozzleradmin.database as db
+from brozzleradmin.forms import NewCrawlRequestForm
+from brozzleradmin.forms import NewCustomJobForm
+from brozzleradmin.forms import NewJobForm
+from brozzleradmin.forms import NewScheduleJobForm
+from brozzleradmin.launch_job import launch_job, launch_scheduled_job
 
 app = Flask(__name__)
-app.config.from_object('config')
+app.config.from_pyfile('config.py')
 
 
 # TODO remake this
@@ -131,6 +128,10 @@ def list_collections():
     return render_template('index.html', crawl_requests=crawl_requests)
 
 
-if __name__ == '__main__':
+def main():
     logging.basicConfig(filename='brozzleradmin.log', level=logging.INFO)
     app.run(debug=True, port=5001)
+
+
+if __name__ == '__main__':
+    main()

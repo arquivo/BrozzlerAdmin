@@ -1,13 +1,13 @@
 from setuptools import setuptools, find_packages
 
 setuptools.setup(
-    name='BrozzlerAdmin',
-    version='0.2.1',
+    name='Brozzler Admin',
+    version='0.2.2',
     packages=find_packages(),
     license='Apache License 2.0',
     long_description=open('README.md').read(),
     author_email='daniel.bicho@fccn.pt',
-    url='',
+    url='https://github.com/arquivo/BrozzlerAdmin',
     entry_points={
         'console_scripts': [
             'bc-get-outlinks=brozzleradmin.cli:get_all_outlinks',
@@ -18,7 +18,7 @@ setuptools.setup(
     },
     install_requires=[
         'flask',
-        'flask-wtf'
+        'flask-wtf',
         'apscheduler',
         'brozzler==1.5.7',
         'WTForms==2.2.1',

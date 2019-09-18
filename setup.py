@@ -2,7 +2,7 @@ from setuptools import setuptools, find_packages
 
 setuptools.setup(
     name='BrozzlerAdmin',
-    version='0.1.1',
+    version='0.2.1',
     packages=find_packages(),
     license='Apache License 2.0',
     long_description=open('README.md').read(),

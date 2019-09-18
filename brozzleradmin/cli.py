@@ -9,8 +9,6 @@ import doublethink
 import brozzleradmin.database as db
 
 
-# TODO decouple this logic with the data access code
-
 def add_common_options(arg_parser, argv=None):
     argv = argv or sys.argv
     arg_parser.add_argument(

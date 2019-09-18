@@ -24,7 +24,7 @@ app.config.from_object('config')
 @app.route('/newschedulejob', methods=['GET', 'POST'])
 def new_schedule_job():
     form = NewScheduleJobForm()
-    if request.args.get('collection'):
+    if request.args.get('crawlrequest'):
         if form.validate_on_submit():
             launch_scheduled_job(g.scheduler, request.args.get('crawlrequest'), form.job_name.data,
                                  form.job_config.data,
@@ -49,9 +49,9 @@ def new_schedule_job():
 def generate_job_template(job_id, job_type, crawl_request_name, crawl_request_prefix, seeds):
     template_name = None
     if job_type[0] == '1':
-        template_name = 'template_single_page_crawl.yaml'
+        template_name = 'job_templates/template_single_page_crawl.yaml'
     elif job_type[0] == '2':
-        template_name == 'template_domain_crawl.yaml'
+        template_name == 'job_templates/template_domain_crawl.yaml'
 
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     with open(os.path.join(__location__, template_name), mode='r') as file_template:

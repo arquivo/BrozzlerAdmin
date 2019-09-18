@@ -25,7 +25,7 @@ def launch_scheduled_job(scheduler, crawl_request_name, job_id, job_conf, date, 
 # save part at database
 # id of the noob needs to be generated
 def launch_job(crawl_request_name, job_id, job_conf):
-    conf = yaml.load(job_conf)
+    conf = yaml.full_load(job_conf)
     # the pre configured jobid is ignored
     conf['id'] = job_id
     frontier = db.get_frontier()

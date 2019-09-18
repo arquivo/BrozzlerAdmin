@@ -1,5 +1,3 @@
-import uuid
-
 import brozzler
 import doublethink
 from brozzler import Job

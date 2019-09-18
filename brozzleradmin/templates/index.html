@@ -20,7 +20,7 @@
                 <!-- <a class="brand" href="#">
                     <img class="img-responsive" src="./img/Logo_UE_Web.png" alt="..."> 
                 </a> -->
-                <h1>Brozzler Controller</h1>
+                <h1>Brozzler Admin</h1>
             </div>
         </div>
     </div>
@@ -30,24 +30,24 @@
         <div class="row">
             <div class="col-lg-8">
                 <!-- TODO: Change hrefs based on template variable -->
-                <a class="btn btn-primary" href="/newcollection"><span class="glyphicon glyphicon-plus"></span> Create New Collection</a>
+                <a class="btn btn-primary" href="/crawlrequest"><span class="glyphicon glyphicon-plus"></span>New Crawl Request</a>
             </div>
         </div>
     </div>
     <div class="container">
-        {% for collection in collections %}
+        {% for crawl_request in crawl_requests %}
             <div class="row">
-                <div class="col-lg-8"><h2 class=""><i class="glyphicon glyphicon-book"></i> Collection {{ collection['name'] }}</h2></div>
-                <div class="col-lg-8"><h4>Job Prefix: {{ collection['job_prefix'] }}</h4></div>
+                <div class="col-lg-8"><h2 class=""><i class="glyphicon glyphicon-book"></i> Crawl Request {{ crawl_request['name'] }}</h2></div>
+                <div class="col-lg-8"><h4>Job Prefix: {{ crawl_request['job_prefix'] }}</h4></div>
                 <div class="col-lg-8">
                     <h4>Job List:
-                    {% for job in collection['job_list'] %}
+                    {% for job in crawl_request['job_list'] %}
                         <a href="http://{{ config.HOSTNAME }}/jobs/{{ job }}"> {{ job }}</a>
                     {% endfor %}
                     </h4>
-                    <a href="/newjob?collection={{ collection['name'] }}" class="btn btn-primary">
+                    <a href="/newjob?crawlrequest={{ crawl_request['name'] }}" class="btn btn-primary">
                         <span class="glyphicon glyphicon-play-circle"></span> Launch new job</a>
-                    <a href="/newschedulejob?collection={{ collection['name'] }}" class="btn btn-primary">
+                    <a href="/newschedulejob?crawlrequest={{ crawl_request['name'] }}" class="btn btn-primary">
                         <span class="glyphicon glyphicon-play-circle"></span> Schedule new job</a>
                 </div>
             </div>

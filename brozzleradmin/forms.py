@@ -4,9 +4,9 @@ from wtforms.validators import DataRequired
 from wtforms.widgets import TextArea
 
 
-class NewCollectionForm(FlaskForm):
-    collection_name = StringField('collection_name', validators=[DataRequired()])
-    collection_prefix = StringField('collection_prefix', validators=[DataRequired()])
+class NewCrawlRequestForm(FlaskForm):
+    crawl_request_name = StringField('crawl_request_name', validators=[DataRequired()])
+    crawl_request_prefix = StringField('crawl_request_prefix', validators=[DataRequired()])
 
 
 class NewJobForm(FlaskForm):

@@ -13,7 +13,7 @@ def get_services():
     return services
 
 
-# TODO get database values from config file instead hardcoded
+# TODO get database values from config file instead of hardcoding them
 def get_frontier():
     rr = doublethink.Rethinker(servers=['localhost:28015'], db='brozzler')
     return brozzler.RethinkDbFrontier(rr)
@@ -32,7 +32,7 @@ def update_collection_joblist(crawl_request_name, job_id):
 
 
 def get_job_by_name(job_id):
-    rr = doublethink.Rethinker(servers=['localhost:28015'], db='brozzler')
+    rr = doublethink.Rethinker(servers=[], db='brozzler')
     job = Job.load(rr, job_id)
     if job:
         return job

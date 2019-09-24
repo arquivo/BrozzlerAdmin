@@ -1,3 +1,4 @@
+import argparse
 import logging
 import os
 
@@ -14,7 +15,6 @@ from brozzleradmin.forms import NewScheduleJobForm
 from brozzleradmin.launch_job import launch_job, launch_scheduled_job
 
 app = Flask(__name__)
-app.config.from_pyfile('config.py')
 
 
 # TODO remake this
@@ -130,7 +130,21 @@ def list_collections():
 
 def main():
     logging.basicConfig(filename='brozzleradmin.log', level=logging.INFO)
-    app.run(debug=True, port=5001)
+
+    # specify configuration file
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', help='Configuration file path.')
+    parser.add_argument('--debug', action='store_true', help='Start in flask debug mode.')
+    parser.add_argument('--port', default=5001, help='Specify port that app will listen.')
+
+    args = parser.parse_args()
+
+    if args.config:
+        app.config.from_pyfile(args.config)
+    else:
+        app.config.from_pyfile('config.py')
+
+    app.run(debug=args.debug, port=args.port)
 
 
 if __name__ == '__main__':

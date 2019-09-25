@@ -2,12 +2,11 @@ import argparse
 import logging
 import os
 
-import doublethink
 import yaml
-from flask import Flask, g, render_template, request, flash, redirect, current_app
+from flask import Flask, g, render_template, request, flash, redirect
 from jinja2 import Template
 
-import brozzleradmin.database as db
+from brozzleradmin.database import DataBaseAccess
 from brozzleradmin.forms import NewCrawlRequestForm
 from brozzleradmin.forms import NewCustomJobForm
 from brozzleradmin.forms import NewJobForm
@@ -15,6 +14,7 @@ from brozzleradmin.forms import NewScheduleJobForm
 from brozzleradmin.launch_job import launch_job, launch_scheduled_job
 
 app = Flask(__name__)
+db = DataBaseAccess()
 
 
 # TODO remake this
@@ -48,7 +48,7 @@ def generate_job_template(job_id, job_type, crawl_request_name, crawl_request_pr
     if job_type[0] == '1':
         template_name = 'job_templates/template_single_page_crawl.yaml'
     elif job_type[0] == '2':
-        template_name == 'job_templates/template_domain_crawl.yaml'
+        template_name = 'job_templates/template_domain_crawl.yaml'
 
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     with open(os.path.join(__location__, template_name), mode='r') as file_template:
@@ -68,7 +68,7 @@ def new_job():
             job_config = generate_job_template(job_id, form.job_template_config.data, crawl_request_name,
                                                form.job_warc_prefix.data, form.job_seeds.data)
 
-            launch_job(crawl_request_name, job_id, job_config)
+            launch_job(db, crawl_request_name, job_id, job_config)
             return redirect('/')
         else:
             job_name = request.args.get('crawlrequest')
@@ -118,9 +118,8 @@ def new_crawl_request():
 
 
 @app.route('/')
-def list_collections():
-    rr = doublethink.Rethinker(servers=['localhost:28015'], db=current_app.config['DATABASE'])
-    crawl_requests = list(rr.table(current_app.config['TABLE_CRAWLREQUESTS']).run())
+def list_crawl_requests():
+    crawl_requests = db.list_crawlrequests()
     names = []
     for crawl_request in crawl_requests:
         names.append(crawl_request['name'])

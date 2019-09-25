@@ -5,8 +5,6 @@ import doublethink
 import yaml
 from brozzler import model, new_job
 
-import brozzleradmin.database as db
-
 
 # TODO Add logging starting and scheduling jobs
 
@@ -24,7 +22,7 @@ def launch_scheduled_job(scheduler, crawl_request_name, job_id, job_conf, date, 
 
 # save part at database
 # id of the noob needs to be generated
-def launch_job(crawl_request_name, job_id, job_conf):
+def launch_job(db, crawl_request_name, job_id, job_conf):
     conf = yaml.full_load(job_conf)
     # the pre configured jobid is ignored
     conf['id'] = job_id
@@ -38,7 +36,7 @@ def launch_job(crawl_request_name, job_id, job_conf):
         logging.warning('Invalid job configuration: {}'.format(e))
 
 
-def resume_job(job_id):
+def resume_job(db, job_id):
     frontier = db.get_frontier()
     job = db.get_job_by_name(job_id)
     frontier.resume_job(job)

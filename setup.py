@@ -4,6 +4,8 @@ setuptools.setup(
     name='Brozzler Admin',
     version='0.2.2',
     packages=find_packages(),
+    package_data={'': ['static/**/*','templates/*','job_templates/*','*.yaml']},
+    include_package_data=True,
     license='Apache License 2.0',
     long_description=open('README.md').read(),
     author_email='daniel.bicho@fccn.pt',
@@ -23,6 +25,7 @@ setuptools.setup(
         'brozzler==1.5.7',
         'WTForms==2.2.1',
         'rethinkdb>=2.3,<2.4',
-        'doublethink>=0.2.0'
+        'doublethink>=0.2.0',
+        'PyYAML'
     ]
 )

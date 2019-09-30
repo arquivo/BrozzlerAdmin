@@ -3,3 +3,4 @@ brozzler==1.5.7
 WTForms
 rethinkdb==2.3.0.post6
 doublethink
+PyYAML

@@ -17,7 +17,7 @@ setuptools.setup(
         ]
     },
     install_requires=[
-        'flask',
+        'Flask',
         'flask-wtf',
         'apscheduler',
         'brozzler==1.5.7',

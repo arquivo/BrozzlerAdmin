@@ -133,8 +133,9 @@ def main():
     # specify configuration file
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', help='Configuration file path.')
-    parser.add_argument('--debug', action='store_true', help='Start in flask debug mode.')
+    parser.add_argument('--host', default='localhost', help='Setup host interface to listen. ( Setup 0.0.0.0 to bind all interfaces)')
     parser.add_argument('--port', default=5001, help='Specify port that app will listen.')
+    parser.add_argument('--debug', action='store_true', help='Start in flask debug mode.')
 
     args = parser.parse_args()
 
@@ -143,7 +144,7 @@ def main():
     else:
         app.config.from_pyfile('config.py')
 
-    app.run(debug=args.debug, port=args.port)
+    app.run(debug=args.debug, port=args.port, host=args.host)
 
 
 if __name__ == '__main__':

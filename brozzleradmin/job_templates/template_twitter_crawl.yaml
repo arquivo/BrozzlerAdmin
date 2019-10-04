@@ -2,8 +2,9 @@ id:  {{ job_id }}
 metadata: {}
 scope:
   blocks:
-    - domain: twitter.com
+    {% for seed in seeds %}- domain: twitter.com
       parent_url_regex: ^{{ seed }}.*$
+    {% endfor %}
   max_hops: 1
   max_hops_off: 1
 seeds:

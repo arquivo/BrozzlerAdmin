@@ -49,6 +49,8 @@ def generate_job_template(job_id, job_type, crawl_request_name, crawl_request_pr
         template_name = 'job_templates/template_single_page_crawl.yaml'
     elif job_type[0] == '2':
         template_name = 'job_templates/template_domain_crawl.yaml'
+    elif job_type[0] == '3':
+        template_name = 'job_templates/template_twitter_crawl.yaml'
 
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     with open(os.path.join(__location__, template_name), mode='r') as file_template:
@@ -133,7 +135,8 @@ def main():
     # specify configuration file
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', help='Configuration file path.')
-    parser.add_argument('--host', default='localhost', help='Setup host interface to listen. ( Setup 0.0.0.0 to bind all interfaces)')
+    parser.add_argument('--host', default='localhost',
+                        help='Setup host interface to listen. ( Setup 0.0.0.0 to bind all interfaces)')
     parser.add_argument('--port', default=5001, help='Specify port that app will listen.')
     parser.add_argument('--debug', action='store_true', help='Start in flask debug mode.')
 

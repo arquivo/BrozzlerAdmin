@@ -2,7 +2,7 @@ from setuptools import setuptools, find_packages
 
 setuptools.setup(
     name='Brozzler Admin',
-    version='0.2.2',
+    version='0.3.2',
     packages=find_packages(),
     package_data={'': ['static/**/*','templates/*','job_templates/*','*.yaml']},
     include_package_data=True,
@@ -22,7 +22,7 @@ setuptools.setup(
         'Flask',
         'flask-wtf',
         'apscheduler',
-        'brozzler==1.5.7',
+        'brozzler>=1.5.7',
         'WTForms==2.2.1',
         'rethinkdb>=2.3,<2.4',
         'doublethink>=0.2.0',

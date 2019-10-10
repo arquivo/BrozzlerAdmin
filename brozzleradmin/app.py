@@ -51,6 +51,10 @@ def generate_job_template(job_id, job_type, crawl_request_name, crawl_request_pr
         template_name = 'job_templates/template_domain_crawl.yaml'
     elif job_type[0] == '3':
         template_name = 'job_templates/template_twitter_crawl.yaml'
+    elif job_type[0] == '4':
+        template_name = 'job_templates/template_1_hop_daily_crawl.yaml'
+    elif job_type[0] == '5':
+        template_name = 'job_templates/template_1_hopoff_crawl.yaml'
 
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     with open(os.path.join(__location__, template_name), mode='r') as file_template:

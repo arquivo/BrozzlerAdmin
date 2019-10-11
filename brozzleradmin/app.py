@@ -137,8 +137,10 @@ def main():
     logging.basicConfig(filename='brozzleradmin.log', level=logging.INFO)
 
     # specify configuration file
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--config', help='Configuration file path.')
+    parser = argparse.ArgumentParser(epilog=(
+        'You can specify a specific configuration using the following environment variables:\n\n'
+        ' BROZZLER_ADMIN_CONFIGURATION  <path to config.py>'
+    ))
     parser.add_argument('--host', default='localhost',
                         help='Setup host interface to listen. ( Setup 0.0.0.0 to bind all interfaces)')
     parser.add_argument('--port', default=5001, help='Specify port that app will listen.')
@@ -146,11 +148,8 @@ def main():
 
     args = parser.parse_args()
 
-    if args.config:
-        app.config.from_pyfile(args.config)
-    else:
-        app.config.from_pyfile('config.py')
-
+    app.config.from_pyfile('config.py')
+    app.config.from_envvar('BROZZLER_ADMIN_CONFIGURATION')
     app.run(debug=args.debug, port=args.port, host=args.host)
 
 

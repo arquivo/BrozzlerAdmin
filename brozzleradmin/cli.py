@@ -47,7 +47,7 @@ def resume_job(argv=None):
     args = arg_parser.parse_args(args=argv[1::])
     rr = doublethink.Rethinker(servers=args.rethinkdb_servers, db=args.rethinkdb_db)
     frontier = brozzler.RethinkDbFrontier(rr)
-    job = db.get_job_by_name(args.job_id)
+    job = db.DataBaseAccess.get_job_by_name(args.job_id)
     if job:
         frontier.resume_job(job)
 

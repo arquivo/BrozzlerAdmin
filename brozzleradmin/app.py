@@ -134,7 +134,7 @@ def list_crawl_requests():
 
 
 def main():
-    logging.basicConfig(filename='brozzleradmin.log', level=logging.INFO)
+    logging.basicConfig(level=logging.INFO)
 
     # specify configuration file
     parser = argparse.ArgumentParser(epilog=(

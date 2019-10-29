@@ -3,7 +3,7 @@ metadata: {}
 scope:
   max_hops: 0
 seeds:
-  {% for seed in seeds %}- ignore_robots: false
+  {% for seed in seeds %}- ignore_robots: {% ignore_robots %}
     url: {{ seed }}
   {% endfor %}
 user_agent: Arquivo-web-crawler (compatible; brozzler/1.5 +http://arquivo.pt/faq-crawling)

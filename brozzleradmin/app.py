@@ -43,7 +43,7 @@ def new_schedule_job():
     return render_template('new_scheduled_job_form.html', form=form)
 
 
-def generate_job_template(job_id, job_type, crawl_request_name, crawl_request_prefix, seeds):
+def generate_job_template(job_id, job_type, crawl_request_name, crawl_request_prefix, seeds, ignore_robots):
     template_name = None
     if job_type[0] == '1':
         template_name = 'job_templates/template_single_page_crawl.yaml'
@@ -60,7 +60,8 @@ def generate_job_template(job_id, job_type, crawl_request_name, crawl_request_pr
     with open(os.path.join(__location__, template_name), mode='r') as file_template:
         job_template = Template(file_template.read())
         job_config = job_template.render(job_id=job_id, crawl_request_name=crawl_request_name,
-                                         crawl_request_prefix=crawl_request_prefix, seeds=seeds.split())
+                                         crawl_request_prefix=crawl_request_prefix, seeds=seeds.split(),
+                                         ignore_robots=ignore_robots)
     return job_config
 
 
@@ -72,7 +73,7 @@ def new_job():
         if form.validate_on_submit():
             job_id = db.generate_job_name(crawl_request_name)
             job_config = generate_job_template(job_id, form.job_template_config.data, crawl_request_name,
-                                               form.job_warc_prefix.data, form.job_seeds.data)
+                                               form.job_warc_prefix.data, form.job_seeds.data, form.job_robots)
 
             launch_job(db, crawl_request_name, job_id, job_config)
             return redirect('/')

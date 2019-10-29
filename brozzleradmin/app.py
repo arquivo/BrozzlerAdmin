@@ -73,7 +73,7 @@ def new_job():
         if form.validate_on_submit():
             job_id = db.generate_job_name(crawl_request_name)
             job_config = generate_job_template(job_id, form.job_template_config.data, crawl_request_name,
-                                               form.job_warc_prefix.data, form.job_seeds.data, form.job_robots)
+                                               form.job_warc_prefix.data, form.job_seeds.data, form.job_robots.data)
 
             launch_job(db, crawl_request_name, job_id, job_config)
             return redirect('/')

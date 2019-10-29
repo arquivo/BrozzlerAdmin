@@ -80,12 +80,11 @@ class DataBaseAccess(object):
             job_name = '{}_{}'.format(crawl_request_name, job_number)
         return job_name
 
-    def new_crawl_request(self, crawl_request_name, prefix_name):
+    def new_crawl_request(self, crawl_request_name):
         rr = doublethink.Rethinker(servers=['{}:{}'.format(self.RETHINKDB_SERVER, self.RETHINKDB_PORT)],
                                    db=self.DATABASE)
         rr.table(self.TABLE_CRAWLREQUESTS).insert({
             'name': crawl_request_name,
-            'job_warc_prefix': prefix_name,
             'job_list': ''
         }).run()
 

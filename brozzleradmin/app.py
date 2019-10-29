@@ -115,7 +115,7 @@ def new_custom_job():
 def new_crawl_request():
     form = NewCrawlRequestForm()
     if form.validate_on_submit():
-        db.new_crawl_request(form.crawl_request_name.data, form.crawl_request_prefix.data)
+        db.new_crawl_request(form.crawl_request_name.data)
         return redirect('/')
     else:
         flash('Invalid crawl request parameters')

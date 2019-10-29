@@ -6,7 +6,6 @@ from wtforms.widgets import TextArea
 
 class NewCrawlRequestForm(FlaskForm):
     crawl_request_name = StringField('crawl_request_name', validators=[DataRequired()])
-    crawl_request_prefix = StringField('crawl_request_prefix', validators=[DataRequired()])
 
 
 class NewJobForm(FlaskForm):

@@ -14,7 +14,13 @@ from brozzleradmin.forms import NewScheduleJobForm
 from brozzleradmin.launch_job import launch_job, launch_scheduled_job
 
 app = Flask(__name__)
-global db
+app.config.from_pyfile('config.py')
+app.config.from_envvar('BROZZLER_ADMIN_CONFIGURATION')
+
+db = DataBaseAccess(database=app.config['DATABASE'], rethinkdb_server=app.config["RETHINKDB_SERVER"],
+                    rethinkdb_port=app.config["RETHINKDB_PORT"],
+                    table_crawlrequests=app.config["TABLE_CRAWLREQUESTS"])
+
 
 # TODO not working
 @app.route('/newschedulejob', methods=['GET', 'POST'])
@@ -148,14 +154,7 @@ def main():
 
     args = parser.parse_args()
 
-    app.config.from_pyfile('config.py')
-    app.config.from_envvar('BROZZLER_ADMIN_CONFIGURATION')
-
     # TODO refactor this
-    db = DataBaseAccess(database=app.config['DATABASE'], rethinkdb_server=app.config["RETHINKDB_SERVER"],
-                        rethinkdb_port=app.config["RETHINKDB_PORT"],
-                        table_crawlrequests=app.config["TABLE_CRAWLREQUESTS"])
-
     app.run(debug=args.debug, port=args.port, host=args.host)
 
 

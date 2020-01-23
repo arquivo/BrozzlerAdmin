@@ -2,7 +2,7 @@ from setuptools import setuptools, find_packages
 
 setuptools.setup(
     name='Brozzler Admin',
-    version='0.3.3',
+    version='0.3.4',
     packages=find_packages(),
     package_data={'': ['static/**/*','templates/*','job_templates/*','*.yaml']},
     include_package_data=True,

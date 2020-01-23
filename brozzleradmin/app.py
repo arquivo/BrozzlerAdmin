@@ -14,10 +14,9 @@ from brozzleradmin.forms import NewScheduleJobForm
 from brozzleradmin.launch_job import launch_job, launch_scheduled_job
 
 app = Flask(__name__)
-db = DataBaseAccess()
+global db
 
-
-# TODO remake this
+# TODO not working
 @app.route('/newschedulejob', methods=['GET', 'POST'])
 def new_schedule_job():
     form = NewScheduleJobForm()
@@ -140,7 +139,7 @@ def main():
     # specify configuration file
     parser = argparse.ArgumentParser(epilog=(
         'You can specify a specific configuration using the following environment variables:\n\n'
-        ' BROZZLER_ADMIN_CONFIGURATION  <path to config.py>'
+        ' BROZZLER_ADMIN_CONFIGURATION=<path to config.py>'
     ))
     parser.add_argument('--host', default='localhost',
                         help='Setup host interface to listen. ( Setup 0.0.0.0 to bind all interfaces)')
@@ -151,6 +150,12 @@ def main():
 
     app.config.from_pyfile('config.py')
     app.config.from_envvar('BROZZLER_ADMIN_CONFIGURATION')
+
+    # TODO refactor this
+    db = DataBaseAccess(database=app.config['DATABASE'], rethinkdb_server=app.config["RETHINKDB_SERVER"],
+                        rethinkdb_port=app.config["RETHINKDB_PORT"],
+                        table_crawlrequests=app.config["TABLE_CRAWLREQUESTS"])
+
     app.run(debug=args.debug, port=args.port, host=args.host)
 
 

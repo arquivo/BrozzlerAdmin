@@ -1,6 +1,8 @@
 import brozzler
 import doublethink
-from brozzler import Job
+from brozzler.model import Job, Page
+
+from brozzleradmin.utils import get_url_base
 
 
 class DataBaseAccess(object):
@@ -23,6 +25,36 @@ class DataBaseAccess(object):
         tables = rr.table_list().run()
         if self.TABLE_CRAWLREQUESTS not in tables:
             rr.table_create(self.TABLE_CRAWLREQUESTS).run()
+
+    def add_page_to_site(self, siteid, url, hops_from_seed=0, priority=1000):
+        rr = doublethink.Rethinker(servers=['{}:{}'.format(self.RETHINKDB_SERVER, self.RETHINKDB_PORT)],
+                                   db='brozzler')
+
+        # verify first if the siteid exists and gets site
+        site = list(rr.table('sites').filter({'id': siteid}).run())[0]
+
+        print("add_page_to_site {}".format(site.get('id')))
+        if site is not None:
+            # insert a page on the database
+            # assume that hops_from_seed is 0
+            page = Page(rr, {
+                "url": str(url), "site_id": site.get("id"),
+                "job_id": site.get("job_id"), "hops_from_seed": hops_from_seed,
+                "priority": priority, "needs_robots_check": True
+            })
+
+            print(page)
+
+            rr.table('pages').insert(page).run()
+            return page
+
+    def get_site(self, jobid, url):
+        rr = doublethink.Rethinker(servers=['{}:{}'.format(self.RETHINKDB_SERVER, self.RETHINKDB_PORT)],
+                                   db='brozzler')
+        url_site = get_url_base(url)
+        sites = list(rr.table('sites').filter({'job_id': jobid, 'seed': url_site}).run())
+
+        return sites[0] if len(sites) == 1 else None
 
     def list_crawlrequests(self):
         rr = doublethink.Rethinker(servers=['{}:{}'.format(self.RETHINKDB_SERVER, self.RETHINKDB_PORT)],

@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import doublethink
 import yaml
 from brozzler import model, new_job
+from brozzleradmin.utils import get_url_base
 
 
 # TODO Add logging starting and scheduling jobs
@@ -34,6 +35,17 @@ def launch_job(db, crawl_request_name, job_id, job_conf):
         logging.info('Launched a new job {} from collection {}'.format(job_id, crawl_request_name))
     except model.InvalidJobConf as e:
         logging.warning('Invalid job configuration: {}'.format(e))
+
+
+# TODO add tests
+def add_bulk_urls(db, job_id, urls):
+    for url in urls:
+        # dificil perceber quando temos um site objecto ou só uma representação
+        # TODO mudar o naming para ser consistente
+        site = db.get_site(job_id, get_url_base(url))
+
+        logging.debug("adding page url: {} to site_id: {}".format(url, site['id']))
+        db.add_page_to_site(site['id'], url)
 
 
 def resume_job(db, job_id):

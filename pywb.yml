@@ -1,0 +1,12 @@
+archive_paths: /data/warcs/  # pywb will fail without a trailing slash
+collections:
+  brozzler:
+    index_paths: !!python/object:brozzler.pywb.RethinkCDXSource
+      db: brozzler
+      table: captures
+      servers:
+            - "rethinkdb"
+enable_auto_colls: false
+enable_cdx_api: true
+framed_replay: true
+port: 8880

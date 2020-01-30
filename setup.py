@@ -2,7 +2,7 @@ from setuptools import setuptools, find_packages
 
 setuptools.setup(
     name='Brozzler Admin',
-    version='0.3.4',
+    version='0.4.4',
     packages=find_packages(),
     package_data={'': ['static/**/*','templates/*','job_templates/*','*.yaml']},
     include_package_data=True,
@@ -19,7 +19,7 @@ setuptools.setup(
         ]
     },
     install_requires=[
-        'Flask',
+        'Flask==1.1.1',
         'flask-wtf',
         'apscheduler',
         'brozzler>=1.5.7',

@@ -15,6 +15,7 @@ class NewJobForm(FlaskForm):
     job_name = StringField('job_name', validators=[DataRequired()])
     job_warc_prefix = StringField('job_warc_prefix', validators=[DataRequired()])
     job_seeds = StringField('job_seeds', widget=TextArea(), validators=[DataRequired()])
+    job_bulk_urls = BooleanField('robots', default=False)
     job_robots = BooleanField('robots', default=False)
 
 

@@ -42,6 +42,9 @@
             {{ form.job_seeds(size=5, class_="form-control") }}
         </div>
         <div class="form-group form-group-sm">
+            <label class="form-control" style="border: 0" for="bulk urls">Bulk Urls: {{  form.job_bulk_urls }}</label>
+        </div>
+        <div class="form-group form-group-sm">
             <label class="form-control" style="border: 0" for="job_robots">Ignore Robots: {{  form.job_robots() }}</label>
         </div>
         <button type="submit" class="btn btn-default">Launch Job</button>

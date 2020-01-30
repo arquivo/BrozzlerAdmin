@@ -11,11 +11,15 @@ from brozzleradmin.forms import NewCrawlRequestForm
 from brozzleradmin.forms import NewCustomJobForm
 from brozzleradmin.forms import NewJobForm
 from brozzleradmin.forms import NewScheduleJobForm
-from brozzleradmin.launch_job import launch_job, launch_scheduled_job
+from brozzleradmin.launch_job import launch_job, launch_scheduled_job, add_bulk_urls
+from brozzleradmin.utils import generate_unique_site_seeds
 
 app = Flask(__name__)
+# app.config.from_pyfile(os.path.join(os.getcwd(), 'config.py'))
 app.config.from_pyfile('config.py')
-app.config.from_envvar('BROZZLER_ADMIN_CONFIGURATION')
+
+if 'BROZZLER_ADMIN_CONFIGURATION' in os.environ:
+    app.config.from_envvar('BROZZLER_ADMIN_CONFIGURATION')
 
 db = DataBaseAccess(database=app.config['DATABASE'], rethinkdb_server=app.config["RETHINKDB_SERVER"],
                     rethinkdb_port=app.config["RETHINKDB_PORT"],
@@ -65,7 +69,7 @@ def generate_job_template(job_id, job_type, crawl_request_name, crawl_request_pr
     with open(os.path.join(__location__, template_name), mode='r') as file_template:
         job_template = Template(file_template.read())
         job_config = job_template.render(job_id=job_id, crawl_request_name=crawl_request_name,
-                                         crawl_request_prefix=crawl_request_prefix, seeds=seeds.split(),
+                                         crawl_request_prefix=crawl_request_prefix, seeds=seeds,
                                          ignore_robots=ignore_robots)
     return job_config
 
@@ -76,11 +80,21 @@ def new_job():
     crawl_request_name = request.args.get('crawlrequest')
     if crawl_request_name:
         if form.validate_on_submit():
+            seeds = form.job_seeds.data.split()
+
+            if form.job_bulk_urls.data:
+                urls = seeds
+                seeds = generate_unique_site_seeds(seeds)
+
             job_id = db.generate_job_name(crawl_request_name)
             job_config = generate_job_template(job_id, form.job_template_config.data, crawl_request_name,
-                                               form.job_warc_prefix.data, form.job_seeds.data, form.job_robots.data)
+                                               form.job_warc_prefix.data, seeds, form.job_robots.data)
 
             launch_job(db, crawl_request_name, job_id, job_config)
+
+            if form.job_bulk_urls.data:
+                add_bulk_urls(db, job_id, urls)
+
             return redirect('/')
         else:
             job_name = request.args.get('crawlrequest')

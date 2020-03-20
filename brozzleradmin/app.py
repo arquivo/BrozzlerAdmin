@@ -11,7 +11,7 @@ from brozzleradmin.forms import NewCrawlRequestForm
 from brozzleradmin.forms import NewCustomJobForm
 from brozzleradmin.forms import NewJobForm
 from brozzleradmin.forms import NewScheduleJobForm
-from brozzleradmin.launch_job import launch_job, launch_scheduled_job, add_bulk_urls
+from brozzleradmin.launch_job import launch_job, launch_scheduled_job, add_bulk_urls, stop_job
 from brozzleradmin.utils import generate_unique_site_seeds
 
 app = Flask(__name__)
@@ -129,6 +129,14 @@ def new_custom_job():
             form = NewCustomJobForm(job_name=job_name, job_config=conf)
 
     return render_template('new_custom_job_form.html', form=form)
+
+
+@app.route('/stopjob', methods=['GET'])
+def stopjob():
+    if request.args.get("jobid"):
+        stop_job(db, request.args.get("jobid"))
+
+    return redirect('/')
 
 
 @app.route('/crawlrequest', methods=['GET', 'POST'])

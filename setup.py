@@ -2,7 +2,7 @@ from setuptools import setuptools, find_packages
 
 setuptools.setup(
     name='Brozzler Admin',
-    version='0.4.4',
+    version='0.5.4',
     packages=find_packages(),
     package_data={'': ['static/**/*','templates/*','job_templates/*','*.yaml']},
     include_package_data=True,
@@ -20,12 +20,13 @@ setuptools.setup(
     },
     install_requires=[
         'Flask==1.1.1',
-        'flask-wtf',
+        'flask-wtf==0.14.3',
         'apscheduler',
         'brozzler>=1.5.7',
         'WTForms==2.2.1',
         'rethinkdb>=2.3,<2.4',
         'doublethink>=0.2.0',
-        'PyYAML'
+        'PyYAML',
+        'Jinja2==2.10.1'
     ]
 )

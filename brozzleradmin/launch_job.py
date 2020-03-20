@@ -54,6 +54,10 @@ def resume_job(db, job_id):
     frontier.resume_job(job)
 
 
+def stop_job(db, job_id):
+    db.stop_job(job_id)
+
+
 # TODO remove this, and make it a pytest
 if __name__ == '__main__':
     # test launch job

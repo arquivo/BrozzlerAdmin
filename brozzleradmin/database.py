@@ -26,6 +26,14 @@ class DataBaseAccess(object):
         if self.TABLE_CRAWLREQUESTS not in tables:
             rr.table_create(self.TABLE_CRAWLREQUESTS).run()
 
+    def stop_job(self, job_id):
+        rr = doublethink.Rethinker(servers=['{}:{}'.format(self.RETHINKDB_SERVER, self.RETHINKDB_PORT)],
+                                   db='brozzler')
+
+        job = Job.load(rr, job_id)
+        job.stop_requested = doublethink.utcnow()
+        job.save()
+
     def add_page_to_site(self, siteid, url, hops_from_seed=0, priority=1000):
         rr = doublethink.Rethinker(servers=['{}:{}'.format(self.RETHINKDB_SERVER, self.RETHINKDB_PORT)],
                                    db='brozzler')

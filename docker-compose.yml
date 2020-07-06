@@ -51,6 +51,8 @@ services:
         ports:
             - "5001:5001"
         entrypoint: [ "bc-launch-ui", "--debug", "--host", "0.0.0.0" ]
+        depends_on:
+            - rethinkdb
 
     brozzler-wayback:
         image: arquivo/brozzler-frontend

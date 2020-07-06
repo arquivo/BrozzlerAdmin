@@ -2,13 +2,11 @@
     <head>
             <meta http-equiv="content-type" content="text/html; charset=UTF-8">            
             <meta charset="utf-8">
-            <title>Brozzler Controller</title>
+            <title>Brozzler Admin</title>
             <link rel="shortcut icon" type="image/png" href="./img/favicon.ico" />
             <meta name="generator" content="Bootply" />
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-            <!--<link href="static/css/bootstrap.min.css" rel="stylesheet">-->
-            <link href="static/css/Custom.css" rel="stylesheet">
             <!--[if lt IE 9]>
                     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
             <![endif]-->
@@ -26,6 +24,15 @@
         </div>
     </div>
 
+    <div class="container" style="margin-bottom: 1rem;">
+        <div class="row">
+            <div class="col">
+                <!-- TODO: Change hrefs based on template variable -->
+                <a class="btn btn-primary" href="/crawlrequest"><span class="glyphicon glyphicon-plus"></span>New Crawl Request</a>
+            </div>
+        </div>
+    </div>
+
     <!-- Main -->
     <div class="container">
 {% for crawl_request in crawl_requests %}
@@ -33,7 +40,7 @@
             <div class="row">
                 <div class="col"><h2 class=""><i class="glyphicon glyphicon-book"></i>{{ crawl_request['name'] }}</h2></div>
             </div>
-            <div class="row" style="margin-bottom: 1rem;">
+            <div class="row" style="margin-bottom: 1rem; margin-top: 1rem; font-size: 1.5rem;">
                 <div class="col">Crawl Job Status</div>
                 <div class="col">Crawl Job ID</div>
                 <div class="col">Crawl Job Actions</div>
@@ -51,7 +58,7 @@
                 </div>
             </div>
             {% endfor %}
-            <div class="row" style="margin-top: 2rem;">
+            <div class="row" style="margin-bottom: 1rem;">
                 <div class="col">
                     <a href="/newjob?crawlrequest={{ crawl_request['name'] }}" class="btn btn-primary">
                         <span class="glyphicon glyphicon-play-circle"></span>Launch Job
@@ -62,21 +69,12 @@
                         <span class="glyphicon glyphicon-play-circle"></span>Launch Custom Job</a>
                 </div>
                 <div class="col">
-                    <a href="/newschedulejob?crawlrequest={{ crawl_request['name'] }}" class="btn btn-primary">
+                    <a href="/newschedulejob?crawlrequest={{ crawl_request['name'] }}" role="button" class="btn btn-primary disactive">
                         <span class="glyphicon glyphicon-play-circle"></span>Schedule Job</a>
                 </div>
             </div>
         </div> 
 {% endfor %}
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <!-- TODO: Change hrefs based on template variable -->
-                <a class="btn btn-primary" href="/crawlrequest"><span class="glyphicon glyphicon-plus"></span>New Crawl Request</a>
-            </div>
-        </div>
     </div>
 
     <!-- script references -->

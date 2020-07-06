@@ -1,21 +1,17 @@
-FROM ubuntu:16.04
+FROM debian:latest
 
 WORKDIR /home/brozzler
 
 # Install suitable version of Python:
 RUN apt-get update
-RUN apt-get install -y python3-dev python3-gdbm curl git libffi-dev libssl-dev
-RUN curl "https://bootstrap.pypa.io/get-pip.py" | python3.5
-
-RUN apt-get -y install gcc
-
-RUN apt-get install -y dbus
+RUN apt-get install -y python3-dev python3-gdbm curl git libffi-dev libssl-dev dbus g++
+RUN curl "https://bootstrap.pypa.io/get-pip.py" | python3
 
 RUN useradd -ms /bin/bash brozzler
 
 COPY . .
 
-RUN python3.5 setup.py install
+RUN python3 setup.py install
 
 EXPOSE 5001
 

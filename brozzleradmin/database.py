@@ -56,6 +56,12 @@ class DataBaseAccess(object):
             rr.table('pages').insert(page).run()
             return page
 
+    def get_job_status(self, jobid):
+        rr = doublethink.Rethinker(servers=['{}:{}'.format(self.RETHINKDB_SERVER, self.RETHINKDB_PORT)],
+                                   db='brozzler')
+        status = list(rr.table('jobs').filter({'id': jobid}).run())[0]['status']
+        return status
+
     def get_site(self, jobid, url):
         rr = doublethink.Rethinker(servers=['{}:{}'.format(self.RETHINKDB_SERVER, self.RETHINKDB_PORT)],
                                    db='brozzler')

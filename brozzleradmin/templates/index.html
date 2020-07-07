@@ -7,6 +7,7 @@
             <meta name="generator" content="Bootply" />
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+            <link rel="stylesheet" hrfe="static/css/style.css"> 
             <!--[if lt IE 9]>
                     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
             <![endif]-->
@@ -28,7 +29,7 @@
         <div class="row">
             <div class="col">
                 <!-- TODO: Change hrefs based on template variable -->
-                <a class="btn btn-primary" href="/crawlrequest"><span class="glyphicon glyphicon-plus"></span>New Crawl Request</a>
+                <a class="btn btn-primary" style="width: 200px;" href="/crawlrequest"><span class="glyphicon glyphicon-plus"></span>New Crawl Request</a>
             </div>
         </div>
     </div>
@@ -48,28 +49,28 @@
             {% for job in crawl_request['job_list'] %}
             <div class="row" style="margin-bottom: 1rem;">
                 <div class="col">
-                    Running
+                    {{ job_status[job]|default("Not Determined", true) }}
                 </div>
                 <div class="col">
                     <a href="http://{{ config.BROZZLER_ENDPOINT }}/jobs/{{ job }}">{{ job }}</a>
                 </div>
                 <div class="col">
-                    <a href="/stopjob?jobid={{ job }}" class="btn btn-primary">Stop Job</a>
+                    <a href="/stopjob?jobid={{ job }}" class="btn btn-primary" style="width: 200px;">Stop Job</a>
                 </div>
             </div>
             {% endfor %}
             <div class="row" style="margin-bottom: 1rem;">
                 <div class="col">
-                    <a href="/newjob?crawlrequest={{ crawl_request['name'] }}" class="btn btn-primary">
+                    <a href="/newjob?crawlrequest={{ crawl_request['name'] }}" class="btn btn-primary" style="width: 200px;">
                         <span class="glyphicon glyphicon-play-circle"></span>Launch Job
                     </a>
                 </div>
                 <div class="col">
-                    <a href="/newcustomjob?crawlrequest={{ crawl_request['name'] }}" class="btn btn-primary">
+                    <a href="/newcustomjob?crawlrequest={{ crawl_request['name'] }}" class="btn btn-primary" style="width: 200px;">
                         <span class="glyphicon glyphicon-play-circle"></span>Launch Custom Job</a>
                 </div>
                 <div class="col">
-                    <a href="/newschedulejob?crawlrequest={{ crawl_request['name'] }}" role="button" class="btn btn-primary disactive">
+                    <a href="/newschedulejob?crawlrequest={{ crawl_request['name'] }}" role="button" class="btn btn-primary disactive" style="width: 200px;">
                         <span class="glyphicon glyphicon-play-circle"></span>Schedule Job</a>
                 </div>
             </div>

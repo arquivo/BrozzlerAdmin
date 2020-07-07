@@ -1,6 +1,7 @@
 import argparse
 import logging
 import os
+from collections import defaultdict
 
 import yaml
 from flask import Flask, g, render_template, request, flash, redirect
@@ -154,11 +155,12 @@ def new_crawl_request():
 @app.route('/')
 def list_crawl_requests():
     crawl_requests = db.list_crawlrequests()
-    names = []
+    job_status = defaultdict()
     for crawl_request in crawl_requests:
-        names.append(crawl_request['name'])
-
-    return render_template('index.html', crawl_requests=crawl_requests)
+        for job in crawl_request['job_list']:
+            status = db.get_job_status(job)
+            job_status[job] = status
+    return render_template('index.html', crawl_requests=crawl_requests, job_status=job_status)
 
 
 def main():

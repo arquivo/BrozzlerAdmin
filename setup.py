@@ -27,6 +27,6 @@ setuptools.setup(
         'rethinkdb>=2.3,<2.4',
         'doublethink>=0.2.0',
         'PyYAML',
-        'Jinja2==2.10.1'
+        'Jinja2==2.11.3'
     ]
 )
